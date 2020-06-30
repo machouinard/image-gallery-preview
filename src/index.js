@@ -9,16 +9,17 @@
 
 		$( 'a.intro' ).click( function( e ) {
 			e.preventDefault();
-			let id = $(this).data('click');
-			console.log('id', id);
 			initGallery();
-			let asdf = document.getElementById(id);
-			console.log('asdf', asdf);
-			$(asdf).click();
+			// get ID from data-att of initial thumbnail
+			let id = $(this).data('click');
+
+			// Get same thumb in gallery and trigger a click
+			let thumb = document.getElementById(id);
+			$(thumb).click();
 		} );
 
 
-		$( '#link' ).click( e => {
+		$( '#link, .link' ).click( e => {
 			e.preventDefault();
 			initGallery();
 			//$('a.main').featherlightGallery({
@@ -38,7 +39,14 @@
 				afterOpen: function() {
 					$( 'a.main' ).featherlightGallery( {
 						targetAttr: 'href',
-						variant: 'zzz'
+						variant: 'single',
+						beforeOpen: function() {
+							$.featherlight.close();
+						},
+						afterOpen: function() {
+							const link = $('<span class="single-gallery-link"><a class="link" href="#main-gallery-container">Gallery</a></span>');
+							$('.featherlight.single .featherlight-content').prepend(link);
+						}
 					} );
 				}
 			} );
