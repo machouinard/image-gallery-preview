@@ -19,9 +19,28 @@
 		} );
 
 
-		$( '#link, .link' ).click( e => {
+		$( '#link' ).click( e => {
 			e.preventDefault();
-			initGallery();
+			//initGallery();
+
+			$.featherlight( '#main-gallery', {
+				variant: 'onclick',
+				afterOpen: function() {
+					$( 'a.main' ).featherlightGallery( {
+						targetAttr: 'href',
+						variant: 'single',
+						beforeOpen: function() {
+							$.featherlight.close();
+						},
+						afterOpen: function() {
+							const link = $('<span class="single-gallery-link"><a class="link" href="#main-gallery-container">Gallery</a></span>');
+							$('.featherlight.single .featherlight-content').prepend(link);
+							$(link).click(switchToGallery);
+						}
+					} );
+				}
+			} );
+
 			//$('a.main').featherlightGallery({
 			//	filter: '.gallery-item'
 			//});
@@ -32,6 +51,11 @@
 			//	galleryFadeOut: 300          /* fadeOut speed before slide is loaded */
 			//});
 		} );
+
+		const switchToGallery = () => {
+			$.featherlight.close();
+			initGallery();
+		};
 
 		const initGallery = () => {
 			$.featherlight( '#main-gallery', {
@@ -46,6 +70,7 @@
 						afterOpen: function() {
 							const link = $('<span class="single-gallery-link"><a class="link" href="#main-gallery-container">Gallery</a></span>');
 							$('.featherlight.single .featherlight-content').prepend(link);
+							$(link).click(switchToGallery);
 						}
 					} );
 				}
